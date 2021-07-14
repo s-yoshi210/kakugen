@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
-            <img :src="topImg" alt="" class="img-fluid" style="height: 750px;">
+            <img :src="topImg" alt="" class="img-fluid">
           </div>
           <div class="col-md-6">
             <img :src="symbolImg" alt="" class="symbol-img">
