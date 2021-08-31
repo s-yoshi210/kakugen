@@ -3,17 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "local-serve": "vue-cli-service serve --mode local",
+    "dev-serve": "vue-cli-service serve --mode development",
+    "prod-serve": "vue-cli-service serve --mode production",
     "lint": "vue-cli-service lint",
-    "watch": "vue-cli-service build --watch"
+    "local-build": "vue-cli-service build --mode local",
+    "watch": "vue-cli-service build --watch --mode local",
+    "dev-build": "vue-cli-service build --mode development",
+    "prod-build": "vue-cli-service build --mode production"
   },
   "dependencies": {
     "bootstrap": "^5.0.2",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "eslint-loader": "^4.0.2",
     "vue": "^2.6.14",
     "vue-router": "^3.2.0",
+    "vuex": "^3.6.2",
     "watch": "^1.0.2"
   },
   "devDependencies": {
@@ -21,6 +27,7 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",

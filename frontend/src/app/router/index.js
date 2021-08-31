@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router'
-import Top from '../components/Top'
-import Register from '../components/Register'
+import Home from '../components/Home'
 import Login from '../components/Login'
 
 Vue.use(VueRouter)
@@ -14,33 +13,26 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 const routes = [
   {
     path: '/',
-    name: 'Top',
-    component: Top
+    name: 'Home',
+    component: Home
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: () => import(/* webpackChunkName: "register" */ '../components/auth/Register')
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
-]
+];
 
 const router = new VueRouter({
   mode: 'history',
+  // base: process.env.BASE_URL
   base: '/',
   routes
-})
+});
 
 export default router
