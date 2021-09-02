@@ -3,8 +3,8 @@
     <main class="form-register">
       <form @submit.prevent="register" method="post">
 <!--        <img :src="symbolImg" alt="" class="symbol-img mb-4">-->
+        <h2 class="mb-3">アカウント作成</h2>
         <div class="form-group">
-          <h2 class="mb-3">アカウント作成</h2>
           <label for="name" class="visually-hidden">ユーザー名</label>
           <input
             type="text"
@@ -101,7 +101,7 @@
     },
 
     methods: {
-      ...mapActions(["sendRegisterRequest"]),
+      ...mapActions("auth", ["sendRegisterRequest"]),
 
       register: function() {
         this.sendRegisterRequest(this.details).then(() => {
