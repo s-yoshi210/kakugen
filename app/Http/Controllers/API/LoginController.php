@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use http\Env\Response;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -48,7 +49,6 @@ class LoginController extends Controller
         ]);
     }
 
-
     /**
      * ログイン処理
      *
@@ -85,4 +85,18 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
+    /**
+     * ログアウト処理
+     *
+     * @param Request $request
+     * @return Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return $request->wantsJson()
+            ? new Response('', 204)
+            : redirect('/');
+    }
 }

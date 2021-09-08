@@ -47,6 +47,12 @@ export default {
           // アクセストークン保存 Localstorage or Cookie
           localStorage.setItem("authToken", response.data.token);
         });
+    },
+    sendLogoutRequest({ commit }) {
+      axios.post(process.env.VUE_APP_API_BASE_URL + 'logout').then(() => {
+        commit("setUserData", null);
+        localStorage.removeItem("authToken");
+      })
     }
   }
 };

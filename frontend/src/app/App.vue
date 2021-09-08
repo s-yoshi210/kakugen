@@ -29,7 +29,7 @@
               <router-link class="nav-link" to="/register">ユーザ登録</router-link>
             </li>
             <li class="nav-item" v-show="user">
-              <router-link class="nav-link" to="/logout">ログアウト</router-link>
+              <a href="#" class="nav-link" @click="logout">ログアウト</a>
             </li>
           </ul>
         </div>
@@ -59,9 +59,12 @@
     },
 
     methods: {
-      ...mapActions("auth", ["getUserData"]),
+      ...mapActions("auth", ["sendLogoutRequest", "getUserData"]),
 
-
+      logout() {
+        this.sendLogoutRequest();
+        this.$router.push("/");
+      }
     }
 
   }
