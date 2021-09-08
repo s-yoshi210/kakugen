@@ -1,16 +1,66 @@
 <template>
   <div id="app">
-    <router-view/>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-danger">
+        <router-link class="navbar-brand" to="/home">Kakugen</router-link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarCollapse"
+          aria-controls="navbarCollapse"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/home">Home</router-link>
+            </li>
+            <li class="nav-item" v-show="!user">
+              <router-link class="nav-link" to="/login">ログイン</router-link>
+            </li>
+            <li class="nav-item" v-show="!user">
+              <router-link class="nav-link" to="/register">ユーザ登録</router-link>
+            </li>
+            <li class="nav-item" v-show="user">
+              <router-link class="nav-link" to="/logout">ログアウト</router-link>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main" class="container-fluid">
+      <router-view/>
+    </main>
   </div>
 </template>
 
 <script>
+  import { mapGetters, mapActions } from "vuex";
 
   export default {
     name: 'App',
-    components: {
+
+    computed: {
+      ...mapGetters("auth", ["user"])
+    },
+
+    mounted() {
+      if (localStorage.getItem("authToken")) {
+        this.getUserData();
+      }
+    },
+
+    methods: {
+      ...mapActions("auth", ["getUserData"]),
+
 
     }
+
   }
 </script>
 

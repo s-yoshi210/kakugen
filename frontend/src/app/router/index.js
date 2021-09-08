@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router'
-import Top from '../components/Top'
+// import Top from '../components/Top'
 // import Login from '../components/auth/Login'
 
 Vue.use(VueRouter)
@@ -14,7 +14,12 @@ const routes = [
   {
     path: '/',
     name: 'Top',
-    component: Top
+    component: () => import(/* webpackChunkName: "top" */ '../components/Top')
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "home" */ '../components/Home')
   },
   {
     path: '/register',

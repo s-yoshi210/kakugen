@@ -20,6 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
+    Route::post('login', 'LoginController@login')->name('login');
+
     Route::post('register', 'RegisterController@register')->name('register');
 
+    Route::group(['middleware' => ['auth:api']], function () {
+
+        Route::get('user', 'AuthenticationController@user')->name('user');
+
+    });
 });

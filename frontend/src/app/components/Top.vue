@@ -28,7 +28,7 @@
 
 <script>
   export default {
-    name: "Home",
+    name: "Top",
     data() {
       return {
         topImg: require('../assets/img/top.png'),
