@@ -10,6 +10,21 @@ Vue.use(BootstrapVue)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+const guest = (to, from, next) => {
+  if (!localStorage.getItem('authToken')) {
+    return next();
+  } else {
+    return next('/home');
+  }
+};
+// const auth = (to, from, next) => {
+//   if (localStorage.getItem('authToken')) {
+//     return next();
+//   } else {
+//     return next('/login');
+//   }
+// };
+
 const routes = [
   {
     path: '/',
@@ -24,11 +39,13 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
+    beforeEnter: guest,
     component: () => import(/* webpackChunkName: "register" */ '../components/auth/Register')
   },
   {
     path: '/login',
     name: 'Login',
+    beforeEnter: guest,
     component: () => import(/* webpackChunkName: "login" */ '../components/auth/Login')
   }
 ];
