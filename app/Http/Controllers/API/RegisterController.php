@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\User;
+use App\Models\User;
 use http\Env\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -56,7 +56,7 @@ class RegisterController extends Controller
      * ユーザーインスタンスを作成する
      *
      * @param array $data
-     * @return \App\User
+     * @return \App\Models\User
      */
     protected function create(array $data)
     {
