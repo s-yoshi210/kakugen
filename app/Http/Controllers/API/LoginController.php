@@ -93,10 +93,19 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+        // @TODO：ログアウト処理見直し
         $request->user()->token()->revoke();
 
         return $request->wantsJson()
             ? new Response('', 204)
             : redirect('/');
+
+//        Auth::logout();
+//
+//        $request->session()->invalidate();
+//
+//        $request->session()->regenerateToken();
+//
+//        return redirect('/');
     }
 }
