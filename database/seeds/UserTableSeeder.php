@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kakugen;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class KakugenTableSeeder extends Seeder
+class UserTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,8 +14,8 @@ class KakugenTableSeeder extends Seeder
      */
     public function run()
     {
-        Kakugen::factory()
-            ->count(100)
+        User::factory()
+            ->count(50)
             ->create();
     }
 }
