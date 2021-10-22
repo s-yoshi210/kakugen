@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kakugen;
+use App\Models\MyKakugen;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class KakugenController extends Controller
     {
         // @TODO:改善
         $my_kakugens = DB::table('users')
-                        ->select('kakugen_id')
+                        ->select('my_kakugens.id as my_kakugen_id', 'kakugen_id', 'favorite', 'comment')
                         ->join('my_kakugens', 'users.id', '=', 'my_kakugens.user_id')
                         ->where('users.id', '=', Auth::id());
 
@@ -31,5 +32,27 @@ class KakugenController extends Controller
 
         return $kakugens;
 
+    }
+
+    public function favorite(string $kakugen_id)
+    {
+        $my_kakugen = MyKakugen::updateOrCreate([
+            'user_id' => Auth::id(),
+            'kakugen_id' => $kakugen_id
+        ], [
+            'favorite' => true
+        ]);
+    }
+
+    public function unfavorite(string $kakugen_id)
+    {
+        $my_kakugen = MyKakugen::where('user_id', Auth::id())
+                        ->where('kakugen_id', $kakugen_id)
+                        ->first();
+
+        if($my_kakugen) {
+            $my_kakugen->favorite = false;
+            $my_kakugen->save();
+        }
     }
 }

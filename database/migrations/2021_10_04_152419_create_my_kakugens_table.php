@@ -17,8 +17,9 @@ class CreateMyKakugensTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('kakugen_id')->constrained();
-            $table->boolean('favorite');
-            $table->text('comment');
+            $table->unique(['user_id', 'kakugen_id']);
+            $table->boolean('favorite')->default(false);
+            $table->text('comment')->default(null)->nullable();
             $table->timestamps();
         });
     }

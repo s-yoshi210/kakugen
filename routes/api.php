@@ -23,8 +23,6 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
     Route::post('login', 'LoginController@login')->name('login');
 
     Route::post('register', 'RegisterController@register')->name('register');
-    // @TODO:格言取得API実装後に認証済みユーザーのみアクセスできるように下記に移動する
-    Route::get('kakugens', 'KakugenController@index')->name('kakugens');
 
     Route::group(['middleware' => ['auth:api']], function () {
 
@@ -32,6 +30,9 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
         Route::post('logout', 'LoginController@logout')->name('logout');
 
-//        Route::get('kakugens', 'KakugenController@index')->name('kakugens');
+        Route::get('kakugens', 'KakugenController@index')->name('kakugens');
+
+        Route::post('kakugens/{kakugen_id}/favorite', 'KakugenController@favorite')->name('favorite');
+        Route::delete('kakugens/{kakugen_id}/unfavorite', 'KakugenController@unfavorite')->name('unfavorite');
     });
 });
