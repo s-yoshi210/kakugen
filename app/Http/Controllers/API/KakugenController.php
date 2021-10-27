@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class KakugenController extends Controller
 {
@@ -54,5 +55,24 @@ class KakugenController extends Controller
             $my_kakugen->favorite = false;
             $my_kakugen->save();
         }
+    }
+
+    public function addComment(Request $request, string $kakugen_id)
+    {
+
+        // バリデーション実行
+        $rules = [
+            'comment' => ['required', 'string', 'max:1000']
+        ];
+
+        Validator::make($request->all(), $rules)->validate();
+
+        // コメント登録
+        MyKakugen::updateOrCreate([
+            'user_id' => Auth::id(),
+            'kakugen_id' => $kakugen_id
+        ], [
+            'comment' => $request['comment']
+        ]);
     }
 }

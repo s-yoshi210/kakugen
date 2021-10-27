@@ -158,4 +158,120 @@ class KakugenControllerTest extends PassportTestCase
             ->where('favorite', true);
         $this->assertEquals(0, $response->count());
     }
+
+    /** @test api/kakugens/{kakugen_id}/comment */
+    function コメントが登録できる()
+    {
+        $kakugen = Kakugen::first();
+
+        $dbData = [
+            'user_id' => $this->user->id,
+            'kakugen_id' => $kakugen->id,
+            'comment' => 'sample comment'
+        ];
+
+        $header = [
+            'Authorization' => 'Bearer '.$this->accessToken,
+            'Accept' => 'application/json'
+        ];
+
+        // コメント登録API実行
+        $this->post('api/kakugens/' . $kakugen->id . '/comment', $dbData, $header)
+            ->assertOk();
+
+        // 作成したコメントデータを取得
+        $my_kakugen = MyKakugen::where('user_id', $this->user->id)
+            ->where('kakugen_id', $kakugen->id)
+            ->whereNotNull('comment')
+            ->get();
+
+        // 取得したコメントデータの件数が１件であること
+        $this->assertEquals(1, $my_kakugen->count());
+
+        // 登録されている内容がリクエストしたものであること
+        $this->assertEquals($dbData['comment'], $my_kakugen[0]->comment);
+
+        // 新規登録データである場合、favoriteはfalseであること
+        $this->assertEquals(false, $my_kakugen[0]->favorite);
+
+        // 上記で新規登録したコメントデータを編集
+        $editData = [
+            'comment' => 'edit comment'
+        ];
+
+        $this->post('api/kakugens/' . $kakugen->id . '/comment', $editData, $header)
+            ->assertOk();
+
+        $my_kakugen = MyKakugen::where('user_id', $this->user->id)
+            ->where('kakugen_id', $kakugen->id)
+            ->get();
+
+        // 登録されているコメントがリクエストしたものであること
+        $this->assertEquals($editData['comment'], $my_kakugen[0]->comment);
+    }
+
+//    /** @test api/kakugens/{kakugen_id}/comment */
+////    function 指定文字数以上のコメントは登録できない()
+////    {
+////        $this->withoutExceptionHandling();
+////        $kakugen = Kakugen::first();
+////
+////        $dbData = [
+////            'comment' => 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+////        ];
+////
+////        $header = [
+////            'Authorization' => 'Bearer '.$this->accessToken,
+////            'Accept' => 'application/json'
+////        ];
+////
+////        $this->post('api/kakugens/' . $kakugen->id . '/comment', $dbData, $header)
+////            ->assertSessionHasErrors(['comment' => 'コメントは、1000文字以下で指定してください。']);
+////    }
+
+//    /** @test api/kakugens/{kakugen_id}/edit */
+//    function コメントを編集できる()
+//    {
+//        // コメント登録
+//        $kakugen = Kakugen::first();
+//
+//        $dbData = [
+//            'user_id' => $this->user->id,
+//            'kakugen_id' => $kakugen->id,
+//            'comment' => 'sample comment'
+//        ];
+//
+//        $header = [
+//            'Authorization' => 'Bearer '.$this->accessToken,
+//            'Accept' => 'application/json'
+//        ];
+//
+//        $this->post('api/kakugens/' . $kakugen->id . '/comment', $dbData, $header);
+//
+//        // コメント編集API実行
+//        $editData = [
+//            'user_id' => $this->user->id,
+//            'kakugen_id' => $kakugen->id,
+//            'comment' => 'edit comment'
+//        ];
+//        $this->put('api/kakugens/' . $kakugen->id . '/edit', $editData, $header)
+//            ->assertOk();
+//
+//        // 変更したコメントデータ取得
+//        $response = MyKakugen::where('user_id', $this->user->id)
+//            ->where('kakugen_id', $kakugen->id)
+//            ->get();
+//
+//        // 変更した内容と一致することを確認
+//        $this->assertEquals($editData->comment, $response[0]->comment);
+//
+//    }
+
+//    // コメント削除できる
+//    /** @test api/kakugens/{kakugen_id}/delete */
+//    function コメントを削除できる()
+//    {
+//
+//    }
+
 }

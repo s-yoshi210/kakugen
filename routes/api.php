@@ -34,5 +34,7 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
         Route::post('kakugens/{kakugen_id}/favorite', 'KakugenController@favorite')->name('favorite');
         Route::delete('kakugens/{kakugen_id}/unfavorite', 'KakugenController@unfavorite')->name('unfavorite');
+
+        Route::post('kakugens/{kakugen_id}/comment', 'KakugenController@addComment');
     });
 });
