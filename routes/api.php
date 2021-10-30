@@ -32,9 +32,17 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
         Route::get('kakugens', 'KakugenController@index')->name('kakugens');
 
-        Route::post('kakugens/{kakugen_id}/favorite', 'KakugenController@favorite')->name('favorite');
-        Route::delete('kakugens/{kakugen_id}/unfavorite', 'KakugenController@unfavorite')->name('unfavorite');
+        // お気に入り
+        Route::post('kakugens/{kakugen_id}/favorite', 'FavoriteController@store');
+        Route::delete('kakugens/{kakugen_id}/favorite', 'FavoriteController@destroy');
 
-        Route::post('kakugens/{kakugen_id}/comment', 'KakugenController@addComment');
+        // コメント
+        Route::post('kakugens/{kakugen_id}/comment', 'CommentController@store');
+        Route::put('kakugens/{kakugen_id}/comment', 'CommentController@update');
+        Route::delete('kakugens/{kakugen_id}/comment', 'CommentController@destroy');
+
+        Route::get('mykakugens', 'MyKakugenController@index');
+
+        Route::get('person', 'PersonController@index');
     });
 });
