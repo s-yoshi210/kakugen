@@ -130,7 +130,7 @@
 
       unfavorite(kakugen) {
         axios
-          .delete(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + kakugen.id + '/unfavorite')
+          .delete(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + kakugen.id + '/favorite')
           .then(() => {
             kakugen.favorite = false;
           })

@@ -13,14 +13,30 @@ export default {
     sendCommentRequest({ commit }, data) {
       commit("setErrors", {}, { root: true });
 
-      // let kakugenId = data.kakugenId;
-      console.log("data");
-      console.log(data);
-      console.log(data.kakugenId);
+      if (data.type == 'store') {
+        return axios
+          .post(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + data.kakugenId + '/comment', data)
+          .then(response => {
+            let data = response.data;
+            console.log(data);
+          });
+      } else {
+        return axios
+          .put(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + data.kakugenId + '/comment', data)
+          .then(response => {
+            let data = response.data;
+            console.log(data);
+          });
+      }
+    },
+
+    deleteCommentRequest({ commit }, data) {
+      commit("setErrors", {}, { root: true });
+
       return axios
-        .post(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + data.kakugenId + '/comment', data)
+        .delete(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + data.kakugenId + '/comment', data)
         .then(response => {
-          console.log("コメント登録完了");
+          console.log('deleteCommentRequest');
           let data = response.data;
           console.log(data);
         });

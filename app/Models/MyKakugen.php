@@ -10,4 +10,9 @@ class MyKakugen extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function kakugen()
+    {
+        return $this->hasOne('App\Models\Kakugen', 'id', 'kakugen_id');
+    }
 }

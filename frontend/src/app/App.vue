@@ -22,6 +22,9 @@
             <li class="nav-item" v-show="user">
               <router-link class="nav-link" to="/home">Home</router-link>
             </li>
+            <li class="nav-item" v-show="user">
+              <router-link class="nav-link" to="/mykakugen">My格言</router-link>
+            </li>
             <li class="nav-item" v-show="!user">
               <router-link class="nav-link" to="/login">ログイン</router-link>
             </li>

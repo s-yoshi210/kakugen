@@ -47,6 +47,11 @@ const routes = [
     name: 'Login',
     beforeEnter: guest,
     component: () => import(/* webpackChunkName: "login" */ '../components/auth/Login')
+  },
+  {
+    path: '/mykakugen',
+    name: 'MyKakugen',
+    component: () => import(/* webpackChunkName: "mykakugen" */ '../components/MyKakugen')
   }
 ];
 

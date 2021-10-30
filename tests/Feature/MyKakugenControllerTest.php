@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Kakugen;
 use App\Models\MyKakugen;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Tests\PassportTestCase;
 use Tests\TestCase;
 
-class KakugenControllerTest extends PassportTestCase
+class MyKakugenControllerTest extends PassportTestCase
 {
     // @TODO:共通処理にまとめる
     use RefreshDatabase;
@@ -45,39 +45,30 @@ class KakugenControllerTest extends PassportTestCase
         ];
     }
 
-    /** @test api/kakugens */
-    function 格言が3件取得できる()
+    /** @test api/mykakugens */
+    function My名言一覧が取得できる()
     {
-        $response = $this->get('api/kakugens', [
-            'Authorization' => 'Bearer '.$this->accessToken,
-            'Accept' => 'application/json'
-        ]);
+        // My名言データを２件作成
+        $kakugens = Kakugen::take(2)->get();
 
-        $response->assertJsonCount(3);
-    }
-
-    /** @test api/kakugens */
-    function 取得した3件の格言の中にMy格言は含まれていない()
-    {
-        $kakugenData = [
-            'content' => 'aaaaaa',
-            'person_name' => 'ryou'
-        ];
-        $kakugen = Kakugen::factory()->create($kakugenData);
-
-        $dbData = [
+        $firstData = [
             'user_id' => $this->user->id,
-            'kakugen_id' => $kakugen->id,
+            'kakugen_id' => $kakugens[0]->id,
             'favorite' => true,
-            'comment' => 'aaa'
+            'comment' => 'save comment'
         ];
+        MyKakugen::factory()->create($firstData);
 
-        $my_kakugen = MyKakugen::factory()->create($dbData)->toArray();
+        $secondData = [
+            'user_id' => $this->user->id,
+            'kakugen_id' => $kakugens[1]->id,
+            'favorite' => true,
+            'comment' => 'save comment'
+        ];
+        MyKakugen::factory()->create($secondData);
 
-        $this->get('api/kakugens', [
-            'Authorization' => 'Bearer '.$this->accessToken,
-            'Accept' => 'application/json'
-        ])
-            ->assertJsonMissing($my_kakugen);
+        // ログインユーザーのMy名言が２件登録されていること
+        $this->get('api/mykakugens', $this->header)
+            ->assertJsonCount(2);
     }
 }
