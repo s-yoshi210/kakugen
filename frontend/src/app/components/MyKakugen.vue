@@ -7,7 +7,7 @@
             <b-card header-tag="header" footer-tag="footer">
               <template #header>
                 <h6 class="mb-0">{{ mykakugen.kakugen.content }}</h6>
-                <b-link href="#">{{ mykakugen.kakugen.person_name }}</b-link>
+                <b-link href="#" @click="openPersonModal(mykakugen)">{{ mykakugen.kakugen.person_name }}</b-link>
               </template>
               <b-card-text>
                 <p>{{ mykakugen.comment }}</p>
@@ -59,6 +59,18 @@
           ></textarea>
         </b-modal>
 
+        <div>
+          <b-modal
+            id="person-modal"
+            :title="details.person_name"
+            ok-only
+            ok-variant="secondary"
+            ok-title="Close"
+          >
+            <p class="my-4">{{ person.content }}</p>
+          </b-modal>
+        </div>
+
       </div>
     </main>
   </div>
@@ -66,7 +78,7 @@
 
 <script>
   import axios from 'axios';
-  import {mapActions} from "vuex";
+  import { mapActions } from "vuex";
 
   export default {
       name: "MyKakugen",
@@ -80,6 +92,9 @@
             content: null,
             person_name: null,
             comment: null
+          },
+          person: {
+            content: null
           }
         }
       },
@@ -148,6 +163,19 @@
           this.details.comment = null;
           this.details.person_name = null;
           this.details.comment = null;
+        },
+        openPersonModal(mykakugen) {
+          this.details.person_name = mykakugen.kakugen.person_name;
+          axios
+            .get(process.env.VUE_APP_API_BASE_URL + 'person', {
+              params: {
+                person_name: mykakugen.kakugen.person_name
+              }
+            })
+            .then(response => {
+              this.person.content = response.data;
+              this.$bvModal.show('person-modal');
+            })
         }
       },
 
