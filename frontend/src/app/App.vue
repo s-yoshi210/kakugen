@@ -16,9 +16,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item" v-show="!user">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
             <li class="nav-item" v-show="user">
               <router-link class="nav-link" to="/home">Home</router-link>
             </li>
@@ -65,8 +62,10 @@
       ...mapActions("auth", ["sendLogoutRequest", "getUserData"]),
 
       logout() {
-        this.sendLogoutRequest();
-        this.$router.push("/");
+        this.sendLogoutRequest()
+          .then(() => {
+            this.$router.push("/");
+          })
       }
     }
 

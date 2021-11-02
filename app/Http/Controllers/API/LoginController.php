@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use http\Env\Response;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -89,7 +89,7 @@ class LoginController extends Controller
      * ログアウト処理
      *
      * @param Request $request
-     * @return Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {
