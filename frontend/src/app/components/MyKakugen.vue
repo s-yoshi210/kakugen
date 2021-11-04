@@ -40,6 +40,7 @@
           </div>
         </div>
 
+        <!-- コメント編集モーダル -->
         <b-modal
           :id="'modal-' + details.kakugenId"
           title="コメント"
@@ -59,17 +60,16 @@
           ></textarea>
         </b-modal>
 
-        <div>
-          <b-modal
-            id="person-modal"
-            :title="details.person_name"
-            ok-only
-            ok-variant="secondary"
-            ok-title="Close"
-          >
-            <p class="my-4">{{ person.content }}</p>
-          </b-modal>
-        </div>
+        <!-- 人物詳細モーダル -->
+        <b-modal
+          id="person-modal"
+          :title="details.person_name"
+          ok-only
+          ok-variant="secondary"
+          ok-title="Close"
+        >
+          <p class="my-4">{{ person.content }}</p>
+        </b-modal>
 
       </div>
     </main>

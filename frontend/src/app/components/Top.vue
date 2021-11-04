@@ -1,28 +1,28 @@
 <template>
-  <div>
-    <main class="top">
-      <div class="container-fluid">
+  <div class="top card" style="border: none;">
+    <div class="row g-0">
+      <div class="col-md-5">
+        <img :src="topImg" alt="" class="img-fluid">
+      </div>
+      <div class="col-md-7">
         <div class="row">
-          <div class="col-md-6">
-            <img :src="topImg" alt="" class="img-fluid">
-          </div>
-          <div class="col-md-6">
+          <div class="col-md">
             <img :src="symbolImg" alt="" class="symbol-img">
             <h2>あなただけの名言が、<br>ここに</h2>
             <h4>名言アプリをはじめてみよう</h4>
-            <div class="d-grid gap-2 col-4 mx-auto">
-              <b-link to="/register" class="btn btn-primary">アカウント作成</b-link>
-              <b-link to="/login" class="btn btn-outline-primary">ログイン</b-link>
+            <div class="d-grid gap-2 col-4 mx-auto pt-3">
+              <b-link to="/register" class="btn btn-primary py-2 mb-3">アカウント作成</b-link>
+              <b-link to="/login" class="btn btn-outline-primary py-2 mb-3">ログイン</b-link>
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row mt-5">
           <div class="col-md">
-            <p><small>Copyright &copy;2020 Yoshitaka Shimazu, All Rights Reserved.</small></p>
+            <p><small>Copyright &copy;2021 Yoshitaka Shimazu, All Rights Reserved.</small></p>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   </div>
 </template>
 
