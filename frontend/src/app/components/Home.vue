@@ -1,20 +1,20 @@
 <template>
   <div>
-    <main class="home mt-5">
+    <main class="home mt-md-5 mb-5">
       <div class="container-fluid">
         <h2>{{ currentDate() }}</h2>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div v-for="(kakugen, index) in kakugens" :key="kakugen.id" class="col-md-4">
-            <div class="card">
+            <div class="card my-3">
               <div class="card-header">
                 今日の名言 {{ index + 1 }}
               </div>
               <div class="card-body">
-                <h5 class="card-title mb-4">{{ kakugen.content }}</h5>
+                <h5 class="card-title mb-4 fw-bold">{{ kakugen.content }}</h5>
                 <p class="card-text">{{ kakugen.person_name }}</p>
               </div>
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row justify-content-center py-md-3">
+                <div class="col-12 col-md-6 py-2">
                   <div v-if="kakugen.favorite">
                     <span
                       @click="unfavorite(kakugen)"
@@ -36,7 +36,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-12 col-md-6 py-2">
                   <div v-if="!kakugen.comment" v-b-modal="'modal-' + kakugen.id" @click="openCommentModal(kakugen)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
                       <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>

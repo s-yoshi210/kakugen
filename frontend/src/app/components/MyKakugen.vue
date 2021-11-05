@@ -1,45 +1,64 @@
 <template>
   <div>
-    <main class="mt-5">
+    <main>
       <div class="container-fluid">
+        <h2>My名言</h2>
         <div class="row">
-          <div v-for="mykakugen in mykakugens" :key="mykakugen.id" class="mb-3">
-            <b-card header-tag="header" footer-tag="footer">
+          <div v-for="mykakugen in mykakugens" :key="mykakugen.id" class="mb-3" align="center">
+            <b-card header-tag="header" footer-tag="footer" style="max-width: 50rem;">
               <template #header>
-                <h6 class="mb-0">{{ mykakugen.kakugen.content }}</h6>
-                <b-link href="#" @click="openPersonModal(mykakugen)">{{ mykakugen.kakugen.person_name }}</b-link>
+                <div class="row">
+                  <div class="col-12 col-md-8">
+                    <h6 class="mb-0 text-start py-3 fw-bold">{{ mykakugen.kakugen.content }}</h6>
+                  </div>
+                  <div class="col-12 col-md-4 position-relative pt-3">
+                    <b-link href="#" @click="openPersonModal(mykakugen)" class="position-absolute bottom-0 end-0">{{ mykakugen.kakugen.person_name }}</b-link>
+                  </div>
+                </div>
               </template>
-              <b-card-text>
+              <b-card-text class="text-start">
                 <p>{{ mykakugen.comment }}</p>
               </b-card-text>
               <template #footer>
-                <div v-if="mykakugen.favorite">
-                  <span @click="unfavorite(mykakugen)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                    </svg>
-                    お気に入り解除
-                  </span>
-                </div>
-                <div v-else>
-                  <span @click="favorite(mykakugen)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                      <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                    </svg>
-                    お気に入り
-                  </span>
-                </div>
-                <div v-if="mykakugen.comment">
-                  <b-button v-b-modal="'modal-' + mykakugen.kakugen_id" @click="showUpdateModal(mykakugen)">コメント修正</b-button>
-                </div>
-                <div v-else>
-                  <b-button v-b-modal="'modal-' + mykakugen.kakugen_id" @click="showStoreModal(mykakugen)">コメント登録</b-button>
+                <div class="row justify-content-center py-1">
+                  <div class="col-12 col-md-4 py-1">
+                    <div v-if="mykakugen.favorite">
+                      <span @click="unfavorite(mykakugen)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#dc3545" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+                        お気に入り解除
+                      </span>
+                    </div>
+                    <div v-else>
+                      <span @click="favorite(mykakugen)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                        お気に入り
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 py-1">
+                    <div v-if="!mykakugen.comment" v-b-modal="'modal-' + mykakugen.kakugen_id" @click="showUpdateModal(mykakugen)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                      </svg>
+                      コメント登録
+                    </div>
+                    <div v-else v-b-modal="'modal-' + mykakugen.kakugen_id" @click="showStoreModal(mykakugen)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
+                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                      </svg>
+                      コメント編集
+                    </div>
+                  </div>
                 </div>
               </template>
             </b-card>
           </div>
         </div>
-
         <!-- コメント編集モーダル -->
         <b-modal
           :id="'modal-' + details.kakugenId"
@@ -59,7 +78,6 @@
             v-model="details.comment"
           ></textarea>
         </b-modal>
-
         <!-- 人物詳細モーダル -->
         <b-modal
           id="person-modal"
@@ -70,7 +88,6 @@
         >
           <p class="my-4">{{ person.content }}</p>
         </b-modal>
-
       </div>
     </main>
   </div>
