@@ -37,14 +37,14 @@
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div v-show="!details.comment"　v-b-modal="'modal-' + kakugen.id">
+                  <div v-if="!kakugen.comment" v-b-modal="'modal-' + kakugen.id" @click="openCommentModal(kakugen)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
                       <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                       <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                     </svg>
                     コメント登録
                   </div>
-                  <div v-show="details.comment"　v-b-modal="'modal-' + kakugen.id">
+                  <div v-if="kakugen.comment" v-b-modal="'modal-' + kakugen.id" @click="openCommentModal(kakugen)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat-left-dots-fill" viewBox="0 0 16 16">
                       <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                     </svg>
@@ -52,38 +52,34 @@
                   </div>
                 </div>
               </div>
-
-
-              <div>
-<!--                <b-button v-b-modal="'modal-' + kakugen.id">コメント登録</b-button>-->
-                <b-modal
-                  :id="'modal-' + kakugen.id"
-                  title="コメント"
-                  @ok="saveComment"
-                  ok-title="保存"
-                  @cancel="clearComment"
-                  cancel-title="キャンセル"
-                  no-close-on-backdrop
-                  no-close-on-esc
-                  hide-header-close
-                >
-                  <p>{{ kakugen.content }}</p>
-                  <p>{{ kakugen.person_name }}</p>
-                  <textarea
-                    name=""
-                    id="comment"
-                    cols="50" rows="10"
-                    v-model="details.comment"
-                    :class="{ 'is-invalid': errors.comment}"
-                  ></textarea>
-                  <div class="invalid-feedback" v-if="errors.comment">
-                    <p v-for="error in errors.comment" :key="error">{{ error }}</p>
-                  </div>
-                </b-modal>
-              </div>
-              <div v-if="kakugen.comment">コメント有り</div>
             </div>
           </div>
+
+          <!-- コメントモーダル -->
+          <b-modal
+            :id="'modal-' + details.kakugenId"
+            title="コメント"
+            @ok="saveComment"
+            ok-title="保存"
+            @cancel="clearCommentModal"
+            cancel-title="キャンセル"
+            no-close-on-backdrop
+            no-close-on-esc
+            hide-header-close
+          >
+            <p>{{ details.content }}</p>
+            <p>{{ details.person_name }}</p>
+            <textarea
+              name=""
+              id="comment"
+              cols="50" rows="10"
+              v-model="details.comment"
+              :class="{ 'is-invalid': errors.comment}"
+            ></textarea>
+            <div class="invalid-feedback" v-if="errors.comment">
+              <p v-for="error in errors.comment" :key="error">{{ error }}</p>
+            </div>
+          </b-modal>
         </div>
       </div>
     </main>
@@ -103,6 +99,8 @@
         kakugens: [],
         details: {
           kakugenId: null,
+          content: null,
+          personName: null,
           comment: null
         }
       }
@@ -119,7 +117,6 @@
         moment.locale('ja');
         return moment().format('YYYY年M月D日(dd)')
       },
-
       // @TODO:必要なら処理を１つのファイルにまとめる
       getKakugens() {
         axios
@@ -128,7 +125,6 @@
             this.kakugens = response.data;
           })
       },
-
       favorite(kakugen) {
         axios
           .post(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + kakugen.id + '/favorite')
@@ -136,7 +132,6 @@
             kakugen.favorite = true;
           })
       },
-
       unfavorite(kakugen) {
         axios
           .delete(process.env.VUE_APP_API_BASE_URL + 'kakugens/' + kakugen.id + '/favorite')
@@ -144,22 +139,26 @@
             kakugen.favorite = false;
           })
       },
-
+      openCommentModal(kakugen) {
+        this.details.kakugenId = kakugen.id;
+        this.details.content = kakugen.content;
+        this.details.personName = kakugen.person_name;
+        this.details.comment = kakugen.comment;
+      },
       saveComment: function(modalEvent) {
         this.details.kakugenId = modalEvent.componentId.slice(6);
-
         this.sendCommentRequest(this.details)
           .then(() => {
-            this.details.kakugenId = null;
-            this.details.comment = null;
+            this.clearCommentModal();
           })
           .catch(() => {
             modalEvent.preventDefault();
           });
       },
-
-      clearComment: function () {
+      clearCommentModal: function () {
         this.details.kakugenId = null;
+        this.details.content = null;
+        this.details.personName = null;
         this.details.comment = null;
       }
     },
