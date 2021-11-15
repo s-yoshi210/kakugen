@@ -17,7 +17,8 @@
                 </div>
               </template>
               <b-card-text class="text-start">
-                <p>{{ mykakugen.comment }}</p>
+                <p v-if="mykakugen.comment">{{ mykakugen.comment }}</p>
+                <p v-else>コメント未登録</p>
               </b-card-text>
               <template #footer>
                 <div class="row justify-content-center py-1">
@@ -153,6 +154,7 @@
           this.sendCommentRequest(this.details)
             .then(() => {
               this.clearDetails();
+              this.getMyKakugens();
             })
             .catch(() => {
               modalEvent.preventDefault();
@@ -163,6 +165,7 @@
           this.deleteCommentRequest(this.details)
             .then(() => {
               this.clearDetails();
+              this.getMyKakugens();
             })
         },
         closeComment: function () {
@@ -183,10 +186,11 @@
         },
         openPersonModal(mykakugen) {
           this.details.person_name = mykakugen.kakugen.person_name;
+
           axios
             .get(process.env.VUE_APP_API_BASE_URL + 'person', {
               params: {
-                person_name: mykakugen.kakugen.person_name
+                person_name: this.details.person_name
               }
             })
             .then(response => {

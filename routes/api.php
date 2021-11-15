@@ -20,16 +20,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
+    // ログイン
     Route::post('login', 'LoginController@login')->name('login');
-
+    // アカウント作成
     Route::post('register', 'RegisterController@register')->name('register');
 
+    // 認証済みの場合のみ有効
     Route::group(['middleware' => ['auth:api']], function () {
 
+        // ログインユーザー情報取得
         Route::get('user', 'AuthenticationController@user')->name('user');
 
+        // ログアウト
         Route::post('logout', 'LoginController@logout')->name('logout');
 
+        // 「今日の格言」取得
         Route::get('kakugens', 'KakugenController@index')->name('kakugens');
 
         // お気に入り
@@ -41,8 +46,11 @@ Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
         Route::put('kakugens/{kakugen_id}/comment', 'CommentController@update');
         Route::delete('kakugens/{kakugen_id}/comment', 'CommentController@destroy');
 
+        // My格言取得
         Route::get('mykakugens', 'MyKakugenController@index');
 
+        // wiki人物情報取得
         Route::get('person', 'PersonController@index');
+
     });
 });
