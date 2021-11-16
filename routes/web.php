@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SpaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any}', 'SpaController@app')->where('any', '(/?$|/.*)');
+Route::get('/{any}', [SpaController::class, 'app'])
+        ->where('any', '(/?$|/.*)');

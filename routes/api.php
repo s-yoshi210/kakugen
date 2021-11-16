@@ -2,6 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\LoginController;
+use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\Api\KakugenController;
+use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\MyKakugenController;
+use App\Http\Controllers\Api\PersonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,36 +29,36 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'Api', 'as' => 'api.'], function () {
 
     // ログイン
-    Route::post('login', 'LoginController@login')->name('login');
+    Route::post('login', [LoginController::class, 'login'])->name('login');
     // アカウント作成
-    Route::post('register', 'RegisterController@register')->name('register');
+    Route::post('register', [RegisterController::class, 'register'])->name('register');
 
     // 認証済みの場合のみ有効
     Route::group(['middleware' => ['auth:api']], function () {
 
         // ログインユーザー情報取得
-        Route::get('user', 'AuthenticationController@user')->name('user');
+        Route::get('user', [AuthenticationController::class, 'user'])->name('user');
 
         // ログアウト
-        Route::post('logout', 'LoginController@logout')->name('logout');
+        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
         // 「今日の格言」取得
-        Route::get('kakugens', 'KakugenController@index')->name('kakugens');
+        Route::get('kakugens', [KakugenController::class, 'index'])->name('kakugens');
 
         // お気に入り
-        Route::post('kakugens/{kakugen_id}/favorite', 'FavoriteController@store');
-        Route::delete('kakugens/{kakugen_id}/favorite', 'FavoriteController@destroy');
+        Route::post('kakugens/{kakugen_id}/favorite', [FavoriteController::class, 'store']);
+        Route::delete('kakugens/{kakugen_id}/favorite', [FavoriteController::class, 'destroy']);
 
         // コメント
-        Route::post('kakugens/{kakugen_id}/comment', 'CommentController@store');
-        Route::put('kakugens/{kakugen_id}/comment', 'CommentController@update');
-        Route::delete('kakugens/{kakugen_id}/comment', 'CommentController@destroy');
+        Route::post('kakugens/{kakugen_id}/comment', [CommentController::class, 'store']);
+        Route::put('kakugens/{kakugen_id}/comment', [CommentController::class, 'update']);
+        Route::delete('kakugens/{kakugen_id}/comment', [CommentController::class, 'destroy']);
 
         // My格言取得
-        Route::get('mykakugens', 'MyKakugenController@index');
+        Route::get('mykakugens', [MyKakugenController::class, 'index']);
 
         // wiki人物情報取得
-        Route::get('person', 'PersonController@index');
+        Route::get('person', [PersonController::class, 'index']);
 
     });
 });
