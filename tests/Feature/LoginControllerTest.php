@@ -10,7 +10,7 @@ use Tests\PassportTestCase;
 use Tests\TestCase;
 
 /**
- * @see \App\Http\Controllers\API\LoginController
+ * @see \App\Http\Controllers\Api\LoginController
  */
 class LoginControllerTest extends PassportTestCase
 {
